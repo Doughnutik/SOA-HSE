@@ -10,17 +10,17 @@ entity "PostInfo" {
 }
 
 entity "Comment" {
-	* post_id FOREIGN KEY : NUMBER
+	* comment_id PRIMARY KEY : NUMBER
   	--
-  	user_id FOREIGN KEY : NUMBER
 	post_id FOREIGN KEY : NUMBER
+  	user_id FOREIGN KEY : NUMBER
 	content : TEXT
 	created_at : DATETIME
 	updated_at : DATETIME
 }
 
 entity "Reaction" {
-	* post_id FOREIGN KEY : NUMBER
+	* reaction_id PRIMARY KEY : NUMBER
   	--
   	user_id FOREIGN KEY : NUMBER
 	post_id FOREIGN KEY : NUMBER
