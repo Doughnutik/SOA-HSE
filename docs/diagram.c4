@@ -27,7 +27,7 @@ model {
     	description "Сервис статистики для подсчета лайков, просмотров, комментариев"
     }
 
-    postsService = container "Posts Service" {
+    postService = container "Post Service" {
     	description "Сервис постов и комментариев к ним"
     }
 
@@ -67,15 +67,15 @@ model {
   user -> backend.apiGateway "REST API"
   backend.apiGateway -> backend.userService "Маршрутизирует"
   backend.apiGateway -> backend.statisticsService "Маршрутизирует"
-  backend.apiGateway -> backend.postsService "Маршрутизирует"
+  backend.apiGateway -> backend.postService "Маршрутизирует"
 
   backend.userService -> backend.postgresDb "Читает/Пишет"
   backend.statisticsService -> backend.clickhouseDb "Читает/Пишет"
-  backend.postsService -> backend.cassandraDb "Читает/Пишет"
+  backend.postService -> backend.cassandraDb "Читает/Пишет"
 
   backend.userService -> backend.kafka "Публикует/Подписывается"
   backend.statisticsService -> backend.kafka "Публикует/Подписывается"
-  backend.postsService -> backend.kafka "Публикует/Подписывается"
+  backend.postService -> backend.kafka "Публикует/Подписывается"
 }
 
 views {
