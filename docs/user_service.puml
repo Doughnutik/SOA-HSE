@@ -1,0 +1,38 @@
+@startuml
+
+entity "UserInfo" {
+	* user_id PRIMARY KEY : NUMBER
+  	--
+  	name : VARCHAR
+  	surname : VARCHAR
+  	login : VARCHAR
+  	password_hash : VARCHAR
+}
+
+entity "UserPage" {
+	* user_id FOREIGN KEY : NUMBER
+  	--
+  	posts_url : NUMBER[]
+	images_url : VARCHAR[]
+	privacy_level : NUMBER
+	subscribers : NUMBER[]
+	subscribed_for : NUMBER[]
+}
+
+entity "UserAdditional" {
+  	* user_id FOREIGN KEY : NUMBER
+  	--
+  	bio : TEXT
+	country : VARCHAR
+	city : VARCHAR
+	date_of_birth : DATETIME
+	gender : VARCHAR
+	occupation : VARCHAR
+	interests : VARCHAR[]
+	marital_status : VARCHAR
+}
+
+UserInfo ||--o{ UserPage
+UserInfo ||--o{ UserAdditional
+  
+@enduml

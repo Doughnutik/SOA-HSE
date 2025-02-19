@@ -1,0 +1,33 @@
+@startuml
+
+entity "Event" {
+	* event_id PRIMARY KEY : NUMBER
+  	--
+  	user_id FOREIGN KEY : NUMBER
+	event_type : VARCHAR
+	time : DATETIME
+	event_data : TEXT
+}
+
+entity "UserActivity" {
+	* user_id FOREIGN KEY : NUMBER
+  	--
+  	last_login_time : DATETIME
+	registered_at : DATETIME
+	posts_count : NUMBER
+	comments_count : NUMBER
+	reactions_count : NUMBER
+	watched_posts_count : NUMBER
+}
+
+entity "Session" {
+	* session_id PRIMARY KEY : NUMBER
+  	--
+  	user_id FOREIGN KEY : NUMBER
+	login_at : DATETIME
+	logout_at : DATETIME
+	session_duration : NUMBER
+	ip_address : VARCHAR
+}
+  
+@enduml
