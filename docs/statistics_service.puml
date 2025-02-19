@@ -20,16 +20,14 @@ entity "UserActivity" {
 	watched_posts_count : NUMBER
 }
 
-entity "Reactions" {
-	* post_id FOREIGN KEY : NUMBER
+entity "Session" {
+	* session_id PRIMARY KEY : NUMBER
   	--
   	user_id FOREIGN KEY : NUMBER
-	post_id FOREIGN KEY : NUMBER
-	type : VARCHAR
-	created_at : DATETIME
+	login_at : DATETIME
+	logout_at : DATETIME
+	session_duration : NUMBER
+	ip_address : VARCHAR
 }
-
-PostInfo ||--o{ Comments
-PostInfo ||--o{ Reactions
   
 @enduml

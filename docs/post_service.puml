@@ -9,7 +9,7 @@ entity "PostInfo" {
 	content_url : NUMBER
 }
 
-entity "Comments" {
+entity "Comment" {
 	* post_id FOREIGN KEY : NUMBER
   	--
   	user_id FOREIGN KEY : NUMBER
@@ -19,7 +19,7 @@ entity "Comments" {
 	updated_at : DATETIME
 }
 
-entity "Reactions" {
+entity "Reaction" {
 	* post_id FOREIGN KEY : NUMBER
   	--
   	user_id FOREIGN KEY : NUMBER
