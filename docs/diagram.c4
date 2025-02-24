@@ -1,0 +1,85 @@
+specification {
+    element person {
+        style {
+            shape person
+            color green
+        }
+    }
+    element softwareSystem
+    element container
+}
+
+model {
+	user = person "Пользователь"
+
+	backend = softwareSystem "Backend" {
+
+    apiGateway = container "API Gateway" {
+    	description "Принимает все запросы с UI и отправляет дальше"
+    }
+
+    userService = container "User Service" {
+    	description "Сервис пользователей, который отвечает за регистрацию и аутентификацию пользователей, 
+	  	а также хранит всю информацию по ним"
+    }
+
+    statisticsService = container "Statistics Service" {
+    	description "Сервис статистики для подсчета лайков, просмотров, комментариев"
+    }
+
+    postService = container "Post Service" {
+    	description "Сервис постов и комментариев к ним"
+    }
+
+    postgresDb = container "Postgres" {
+    	description "Хранение данных пользователей"
+    	technology "Database"
+    	style {
+        	shape cylinder
+      	}
+    }
+
+	clickhouseDb = container "Clickhouse" {
+    	description "Хранение статистики"
+    	technology "Database"
+    	style {
+        	shape cylinder
+      	}
+    }
+
+    cassandraDb = container "Cassandra" {
+    	description "Хранение данных Post Service"
+    	technology "Database"
+    	style {
+        	shape cylinder
+      	}
+    }
+
+    kafka = container "Kafka" {
+    	description "Обмен событиями между сервисами"
+    	technology "Message Broker"
+    	style {
+        	shape queue
+      	}
+    }
+  }
+
+  user -> backend.apiGateway "REST API"
+  backend.apiGateway -> backend.userService "Маршрутизирует"
+  backend.apiGateway -> backend.statisticsService "Маршрутизирует"
+  backend.apiGateway -> backend.postService "Маршрутизирует"
+
+  backend.userService -> backend.postgresDb "Читает/Пишет"
+  backend.statisticsService -> backend.clickhouseDb "Читает/Пишет"
+  backend.postService -> backend.cassandraDb "Читает/Пишет"
+
+  backend.userService -> backend.kafka "Публикует/Подписывается"
+  backend.statisticsService -> backend.kafka "Публикует/Подписывается"
+  backend.postService -> backend.kafka "Публикует/Подписывается"
+}
+
+views {
+   view index {
+        include *
+    }
+}
