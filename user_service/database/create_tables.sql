@@ -1,0 +1,17 @@
+CREATE TABLE IF NOT EXISTS user_info (
+    user_id INT PRIMARY KEY,
+    login VARCHAR NOT NULL UNIQUE,
+    password_hash VARCHAR NOT NULL,
+    email VARCHAR NOT NULL UNIQUE,
+    registered_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    changed_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    last_login_time TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE IF NOT EXISTS user_additional (
+    user_id INT PRIMARY KEY REFERENCES user_info(user_id) ON DELETE CASCADE,
+    name VARCHAR NOT NULL,
+    surname VARCHAR NOT NULL,
+    date_of_birth TIMESTAMP,
+    phone_number VARCHAR
+);
