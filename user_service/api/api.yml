@@ -38,12 +38,12 @@ paths:
                 oneOf:
                   - type: object
                     properties:
-                      message:
+                      error:
                         type: string
                         description: "Логин уже существует"
                   - type: object
                     properties:
-                      message:
+                      error:
                         type: string
                         description: "Email уже существует"
         '500':
@@ -119,7 +119,7 @@ paths:
               schema:
                 type: object
                 properties:
-                  message:
+                  error:
                     type: string
                     description: Нужна повторная аутентификации
         '500':
@@ -155,7 +155,7 @@ paths:
               schema:
                 type: object
                 properties:
-                  message:
+                  error:
                     type: string
                     description: Нужна повторная аутентификации
         '500':
@@ -172,20 +172,15 @@ components:
       properties:
         error:
           type: string
-          description: Тип ошибки
-        message:
-          type: string
-          description: Сообщение ошибки
+          description: Ошибка
     
     BadRequestError:
       type: object
       properties:
+        properties:
         error:
           type: string
-          description: Тип ошибки
-        message:
-          type: string
-          description: Сообщение ошибки
+          description: Ошибка
 
     PersonData:
       type: object
