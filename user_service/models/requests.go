@@ -1,14 +1,5 @@
 package models
 
-import "time"
-
-// const (
-// 	RegistrationDataType = iota
-// 	AuthDataType
-// 	PersonDataType
-// 	UpdateProfileDataType
-// )
-
 type RegistrationData struct {
 	Login    string `json:"login"`
 	Password string `json:"password"`
@@ -21,19 +12,19 @@ type AuthData struct {
 }
 
 type PersonData struct {
-	Name        string    `json:"name"`
-	Surname     string    `json:"surname"`
-	BirthDate   time.Time `json:"birth_date,omitempty"`
-	Email       string    `json:"email,omitempty"`
-	PhoneNumber string    `json:"phone_number,omitempty"`
+	Name        string `json:"name"`
+	Surname     string `json:"surname"`
+	BirthDate   string `json:"birth_date"`
+	Email       string `json:"email"`
+	PhoneNumber string `json:"phone_number"`
 }
 
 type UpdateProfileData struct {
-	Login       string    `json:"login"`
-	Password    string    `json:"password"`
-	Name        string    `json:"name,omitempty"`
-	Surname     string    `json:"surname,omitempty"`
-	BirthDate   time.Time `json:"birth_date,omitempty"`
-	Email       string    `json:"email,omitempty"`
-	PhoneNumber string    `json:"phone_number,omitempty"`
+	Login       string `json:"login"`
+	Password    string `json:"password"`
+	Name        string `json:"name,omitempty"`
+	Surname     string `json:"surname,omitempty"`
+	BirthDate   string `json:"birth_date,omitempty"`
+	Email       string `json:"email,omitempty"`
+	PhoneNumber string `json:"phone_number,omitempty"`
 }

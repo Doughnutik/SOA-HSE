@@ -8,7 +8,7 @@ import (
 	"user_service/models"
 
 	"github.com/google/uuid"
-	"github.com/jackc/pgx"
+	"github.com/jackc/pgx/v5"
 	"github.com/jackc/pgx/v5/pgxpool"
 )
 
@@ -20,7 +20,7 @@ var (
 func RegisterUser(db *pgxpool.Pool, req *models.RegistrationData, hashedPassword string) error {
 	queryUserInfo := `
 		INSERT INTO user_info (user_id, login, password_hash, registered_at, changed_at, last_login_time) 
-		VALUES ($1, $2, $3, $4, $5, $5, $5)`
+		VALUES ($1, $2, $3, $4, $4, $4)`
 	queryUserAdditional := `
 		INSERT INTO user_additional (user_id, email) VALUES ($1, $2)`
 
@@ -93,7 +93,8 @@ func GetPersonData(db *pgxpool.Pool, login string) (models.PersonData, error) {
 }
 
 func UpdatePersonData(db *pgxpool.Pool, req models.UpdateProfileData) error {
-	if len(req.Name) == 0 && len(req.Surname) == 0 && len(req.Email) == 0 && len(req.PhoneNumber) == 0 && req.BirthDate.IsZero() {
+	if len(req.Name) == 0 && len(req.Surname) == 0 && len(req.Email) == 0 && len(req.PhoneNumber) == 0 &&
+		len(req.BirthDate) == 0 {
 		return ErrorEmptyRequest
 	}
 
@@ -107,14 +108,14 @@ func UpdatePersonData(db *pgxpool.Pool, req models.UpdateProfileData) error {
 	var (
 		currentName        string
 		currentSurname     string
-		currentBirthDate   time.Time
+		currentBirthDate   string
 		currentEmail       string
 		currentPhoneNumber string
 	)
 	var userID string
 
 	err := db.QueryRow(context.Background(),
-		"SELECT user_id, name, surname, birth_date, email, phone_number FROM user_info AS t1 JOIN user_additional as t2 ON t1.user_id = t2.user_id WHERE t1.login=$1", req.Login).
+		"SELECT t1.user_id, name, surname, birth_date, email, phone_number FROM user_info AS t1 JOIN user_additional as t2 ON t1.user_id = t2.user_id WHERE t1.login=$1", req.Login).
 		Scan(&userID, &currentName, &currentSurname, &currentBirthDate, &currentEmail, &currentPhoneNumber)
 
 	if err != nil {
@@ -127,7 +128,7 @@ func UpdatePersonData(db *pgxpool.Pool, req models.UpdateProfileData) error {
 	if len(newSurname) == 0 {
 		newSurname = currentSurname
 	}
-	if newBirthDate.IsZero() {
+	if len(newBirthDate) == 0 {
 		newBirthDate = currentBirthDate
 	}
 	if len(newEmail) == 0 {

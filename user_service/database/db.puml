@@ -5,9 +5,9 @@ entity "UserInfo" {
   	--
   	login : VARCHAR
   	password_hash : VARCHAR
-	registered_at : DATETIME
-	changed_at: DATETIME
-	last_login_time : DATETIME
+	registered_at : TIMESTAMP
+	changed_at: TIMESTAMP
+	last_login_time : TIMESTAMP
 }
 
 entity "UserAdditional" {
@@ -15,7 +15,7 @@ entity "UserAdditional" {
   	--
 	name : VARCHAR
   	surname : VARCHAR
-	birth_date : DATE
+	birth_date : VARCHAR
 	email : VARCHAR
 	phone_number : VARCHAR
 }

@@ -9,9 +9,9 @@ CREATE TABLE IF NOT EXISTS user_info (
 
 CREATE TABLE IF NOT EXISTS user_additional (
     user_id UUID PRIMARY KEY REFERENCES user_info(user_id) ON DELETE CASCADE,
-    name VARCHAR NOT NULL,
-    surname VARCHAR NOT NULL,
-    birth_date DATE,
+    name VARCHAR DEFAULT '',
+    surname VARCHAR DEFAULT '',
+    birth_date VARCHAR DEFAULT '0000-00-00',
     email VARCHAR NOT NULL UNIQUE,
-    phone_number VARCHAR
+    phone_number VARCHAR DEFAULT ''
 );
