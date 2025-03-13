@@ -2,9 +2,19 @@ package handlers
 
 import (
 	"encoding/json"
+	"errors"
+	"fmt"
 	"io"
+	"log"
 	"net/http"
+	"user_service/models"
+	"user_service/queries"
+
+	"github.com/jackc/pgx/v5/pgxpool"
+	"golang.org/x/crypto/bcrypt"
 )
+
+var DataBaseError = errors.New("Ошибка чтения базы данных")
 
 // readRequestBody читает тело запроса и возвращает его в виде массива байтов.
 func readRequestBody(r *http.Request) ([]byte, error) {
@@ -28,4 +38,35 @@ func writeJSONResponse(w http.ResponseWriter, statusCode int, data interface{}) 
 	}
 
 	w.Write(response)
+}
+
+func ParseRequestBody[T any](w http.ResponseWriter, r *http.Request) (*T, error) {
+	var req T
+
+	body, err := readRequestBody(r)
+	if err != nil {
+		http.Error(w, "Ошибка чтения запроса", http.StatusInternalServerError)
+		log.Printf("ParseRequestBody\t Ошибка чтения запроса: %v", err)
+		return nil, err
+	}
+
+	if err := json.Unmarshal(body, &req); err != nil {
+		http.Error(w, "Неверный формат JSON", http.StatusBadRequest)
+		return nil, err
+	}
+	return &req, nil
+}
+
+func AuthenticateUser(db *pgxpool.Pool, authData models.AuthData) error {
+	storedHash, err := queries.TakePasswordByLogin(db, authData.Login)
+	if err != nil {
+		log.Printf("AuthenticateUser\t Ошибка аутентификации: %v", err)
+		return DataBaseError
+	}
+
+	if len(storedHash) == 0 || bcrypt.CompareHashAndPassword([]byte(storedHash), []byte(authData.Password)) != nil {
+		return fmt.Errorf("Неверный логин или пароль")
+	}
+
+	return nil // Аутентификация успешна
 }

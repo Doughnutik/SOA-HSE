@@ -11,16 +11,7 @@ paths:
         content:
           application/json:
             schema:
-              type: object
-              properties:
-                login:
-                  type: string
-                password:
-                  type: string
-                  format: password
-                email:
-                  type: string
-                  format: email
+              $ref: '#/components/schemas/RegistrationData'
       responses:
         '200':
           description: Пользователь успешно зарегистрирован
@@ -61,24 +52,10 @@ paths:
         content:
           application/json:
             schema:
-              type: object
-              properties:
-                login:
-                  type: string
-                password:
-                  type: string
-                  format: password
+              $ref: '#/components/schemas/AuthData'
       responses:
         '200':
-          description: Успешная аутентификация, возвращен JWT токен
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  token:
-                    type: string
-                    description: JWT токен для аутентификации
+          description: Успешная аутентификация
         '400':
           description: Некорректные параметры запроса
           content:
@@ -97,8 +74,12 @@ paths:
   /profile:
     get:
       summary: Получение данных профиля пользователя
-      security:
-        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AuthData'
       responses:
         '200':
           description: Данные профиля пользователя
@@ -113,15 +94,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/BadRequestError'
         '401':
-          description: Невалидный JWT токен
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  error:
-                    type: string
-                    description: Нужна повторная аутентификации
+          description: Неверный логин или пароль
         '500':
           description: Ошибка получения профиля
           content:
@@ -131,14 +104,12 @@ paths:
 
     put:
       summary: Обновление данных профиля пользователя
-      security:
-        - bearerAuth: []
       requestBody:
         required: true
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/PersonData'
+              $ref: '#/components/schemas/UpdateProfileData'
       responses:
         '200':
           description: Профиль успешно обновлен
@@ -181,6 +152,32 @@ components:
         error:
           type: string
           description: Ошибка
+
+    RegistrationData:
+      type: object
+      properties:
+        login:
+          type: string
+        password:
+          type: string
+          format: password
+        email:
+          type: string
+          format: email
+
+    AuthData:
+      type: object
+      properties:
+        login:
+          type: string
+        password:
+          type: string
+          format: password
+
+    UpdateProfileData:
+      allOf:
+        - $ref: '#/components/schemas/AuthData'
+        - $ref: '#/components/schemas/PersonData'
 
     PersonData:
       type: object

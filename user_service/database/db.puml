@@ -1,22 +1,22 @@
 @startuml
 
 entity "UserInfo" {
-	* user_id PRIMARY KEY : NUMBER
+	* user_id PRIMARY KEY : UUID
   	--
   	login : VARCHAR
   	password_hash : VARCHAR
-	email : VARCHAR
 	registered_at : DATETIME
 	changed_at: DATETIME
 	last_login_time : DATETIME
 }
 
 entity "UserAdditional" {
-  	* user_id FOREIGN KEY : NUMBER
+  	* user_id FOREIGN KEY : UUID
   	--
 	name : VARCHAR
   	surname : VARCHAR
-	date_of_birth : DATETIME
+	birth_date : DATE
+	email : VARCHAR
 	phone_number : VARCHAR
 }
 

@@ -2,18 +2,25 @@ package models
 
 import "time"
 
-type RegisterRequest struct {
+// const (
+// 	RegistrationDataType = iota
+// 	AuthDataType
+// 	PersonDataType
+// 	UpdateProfileDataType
+// )
+
+type RegistrationData struct {
 	Login    string `json:"login"`
 	Password string `json:"password"`
 	Email    string `json:"email"`
 }
 
-type LoginRequest struct {
+type AuthData struct {
 	Login    string `json:"login"`
 	Password string `json:"password"`
 }
 
-type GetPersonDataRequest struct {
+type PersonData struct {
 	Name        string    `json:"name"`
 	Surname     string    `json:"surname"`
 	BirthDate   time.Time `json:"birth_date,omitempty"`
@@ -21,7 +28,9 @@ type GetPersonDataRequest struct {
 	PhoneNumber string    `json:"phone_number,omitempty"`
 }
 
-type UpdatePersonDataRequest struct {
+type UpdateProfileData struct {
+	Login       string    `json:"login"`
+	Password    string    `json:"password"`
 	Name        string    `json:"name,omitempty"`
 	Surname     string    `json:"surname,omitempty"`
 	BirthDate   time.Time `json:"birth_date,omitempty"`

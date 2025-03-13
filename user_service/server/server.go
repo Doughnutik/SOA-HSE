@@ -41,7 +41,6 @@ func NewServer(cfg *config.Config, db *pgxpool.Pool) *Server {
 func (s *Server) setupRoutes() {
 	s.Router.Post("/register", handlers.RegisterUser(s.DB)) // Регистрация
 	s.Router.Post("/login", handlers.LoginUser(s.DB))       // Авторизация
-
-	// s.Router.Get("/profile", handlers.GetProfile(s.DB))    // Получение профиля
-	// s.Router.Put("/profile", handlers.UpdateProfile(s.DB)) // Обновление профиля
+	s.Router.Get("/profile", handlers.GetProfile(s.DB))     // Получение профиля
+	s.Router.Put("/profile", handlers.UpdateProfile(s.DB))  // Обновление профиля
 }
