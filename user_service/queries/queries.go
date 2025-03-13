@@ -12,6 +12,11 @@ import (
 	"github.com/jackc/pgx/v5/pgxpool"
 )
 
+var (
+	ErrorEmptyRequest = errors.New("пустой запрос")
+	ErrorDataBase     = errors.New("ошибка базы данных")
+)
+
 func RegisterUser(db *pgxpool.Pool, req *models.RegistrationData, hashedPassword string) error {
 	queryUserInfo := `
 		INSERT INTO user_info (user_id, login, password_hash, registered_at, changed_at, last_login_time) 
@@ -72,6 +77,7 @@ func UpdateLastLoginTime(db *pgxpool.Pool, login string, time time.Time) error {
 	if err != nil {
 		return err
 	}
+	return nil
 }
 
 func GetPersonData(db *pgxpool.Pool, login string) (models.PersonData, error) {
@@ -84,4 +90,68 @@ func GetPersonData(db *pgxpool.Pool, login string) (models.PersonData, error) {
 		return models.PersonData{}, err
 	}
 	return profile, nil
+}
+
+func UpdatePersonData(db *pgxpool.Pool, req models.UpdateProfileData) error {
+	if len(req.Name) == 0 && len(req.Surname) == 0 && len(req.Email) == 0 && len(req.PhoneNumber) == 0 && req.BirthDate.IsZero() {
+		return ErrorEmptyRequest
+	}
+
+	var (
+		newName        = req.Name
+		newSurname     = req.Surname
+		newBirthDate   = req.BirthDate
+		newEmail       = req.Email
+		newPhoneNumber = req.PhoneNumber
+	)
+	var (
+		currentName        string
+		currentSurname     string
+		currentBirthDate   time.Time
+		currentEmail       string
+		currentPhoneNumber string
+	)
+	var userID string
+
+	err := db.QueryRow(context.Background(),
+		"SELECT user_id, name, surname, birth_date, email, phone_number FROM user_info AS t1 JOIN user_additional as t2 ON t1.user_id = t2.user_id WHERE t1.login=$1", req.Login).
+		Scan(&userID, &currentName, &currentSurname, &currentBirthDate, &currentEmail, &currentPhoneNumber)
+
+	if err != nil {
+		return ErrorDataBase
+	}
+
+	if len(newName) == 0 {
+		newName = currentName
+	}
+	if len(newSurname) == 0 {
+		newSurname = currentSurname
+	}
+	if newBirthDate.IsZero() {
+		newBirthDate = currentBirthDate
+	}
+	if len(newEmail) == 0 {
+		newEmail = currentEmail
+	}
+	if len(newPhoneNumber) == 0 {
+		newPhoneNumber = currentPhoneNumber
+	}
+
+	_, err = db.Exec(context.Background(),
+		"UPDATE user_additional SET name=$1, surname=$2, birth_date=$3, email=$4, phone_number=$5 WHERE user_id=$6",
+		newName, newSurname, newBirthDate, newEmail, newPhoneNumber, userID)
+
+	if err != nil {
+		return ErrorDataBase
+	}
+
+	_, err = db.Exec(context.Background(),
+		"UPDATE user_info SET changed_at=$1 WHERE user_id=$2",
+		time.Now(), userID)
+
+	if err != nil {
+		return ErrorDataBase
+	}
+
+	return nil
 }

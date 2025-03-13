@@ -14,7 +14,9 @@ import (
 	"golang.org/x/crypto/bcrypt"
 )
 
-var DataBaseError = errors.New("Ошибка чтения базы данных")
+var (
+	ErrorDataBase = errors.New("ошибка базы данных")
+)
 
 // readRequestBody читает тело запроса и возвращает его в виде массива байтов.
 func readRequestBody(r *http.Request) ([]byte, error) {
@@ -61,11 +63,11 @@ func AuthenticateUser(db *pgxpool.Pool, authData models.AuthData) error {
 	storedHash, err := queries.TakePasswordByLogin(db, authData.Login)
 	if err != nil {
 		log.Printf("AuthenticateUser\t Ошибка аутентификации: %v", err)
-		return DataBaseError
+		return ErrorDataBase
 	}
 
 	if len(storedHash) == 0 || bcrypt.CompareHashAndPassword([]byte(storedHash), []byte(authData.Password)) != nil {
-		return fmt.Errorf("Неверный логин или пароль")
+		return fmt.Errorf("неверный логин или пароль")
 	}
 
 	return nil // Аутентификация успешна

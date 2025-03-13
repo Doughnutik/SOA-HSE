@@ -68,7 +68,7 @@ func LoginUser(db *pgxpool.Pool) http.HandlerFunc {
 		}
 
 		err = AuthenticateUser(db, *req)
-		if errors.Is(err, DataBaseError) {
+		if errors.Is(err, ErrorDataBase) {
 			http.Error(w, err.Error(), http.StatusInternalServerError)
 			return
 		} else if err != nil {
