@@ -39,5 +39,5 @@ func main() {
 	// Запускаем сервер
 	srv := server.NewServer(cfg, db)
 	log.Printf("Сервер запущен на порту %s", cfg.Port)
-	log.Fatal(http.ListenAndServe(cfg.Host+":"+cfg.Port, srv.Router))
+	log.Fatal(http.ListenAndServe(":"+cfg.Port, srv.Router))
 }

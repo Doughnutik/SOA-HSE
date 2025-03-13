@@ -9,6 +9,7 @@ import (
 	"time"
 	"user_service/models"
 
+	"github.com/google/uuid"
 	"github.com/jackc/pgx/v5"
 	"github.com/jackc/pgx/v5/pgxpool"
 	"golang.org/x/crypto/bcrypt"
@@ -32,15 +33,14 @@ func RegisterUser(db *pgxpool.Pool) http.HandlerFunc {
 		}
 
 		// Проверяем, существует ли уже пользователь с таким логином
-		var existingUserID int
+		var existingUserID string
 		if err := db.QueryRow(context.Background(),
 			"SELECT user_id FROM user_info WHERE login = $1",
 			req.Login).Scan(&existingUserID); err != nil && !errors.Is(err, pgx.ErrNoRows) {
 			http.Error(w, "Ошибка чтения базы данных", http.StatusInternalServerError)
 			log.Printf("RegisterUser\t Ошибка проверки существования login в бд: %v", err)
 			return
-		}
-		if err == nil {
+		} else if err == nil {
 			http.Error(w, "Логин уже существует", http.StatusConflict)
 			return
 		}
@@ -52,8 +52,7 @@ func RegisterUser(db *pgxpool.Pool) http.HandlerFunc {
 			http.Error(w, "Ошибка чтения базы данных", http.StatusInternalServerError)
 			log.Printf("RegisterUser\t Ошибка проверки существования email в бд: %v", err)
 			return
-		}
-		if err == nil {
+		} else if err == nil {
 			http.Error(w, "Email уже существует", http.StatusConflict)
 			return
 		}
@@ -66,11 +65,13 @@ func RegisterUser(db *pgxpool.Pool) http.HandlerFunc {
 		}
 
 		query := `
-			INSERT INTO user_info (login, password_hash, email, registered_at, changed_at, last_login_time) 
-			VALUES ($1, $2, $3, $4, $4, $4) RETURNING user_id`
-		var userID int
+			INSERT INTO user_info (user_id, login, password_hash, email, registered_at, changed_at, last_login_time) 
+			VALUES ($1, $2, $3, $4, $5, $5, $5)`
 
-		err = db.QueryRow(context.Background(), query, req.Login, string(hashedPassword), req.Email, time.Now()).Scan(&userID)
+		newUserID := uuid.New().String() // Генерация нового UUID
+		log.Printf("RegisterUser\t Создание нового пользователя %s", newUserID)
+
+		_, err = db.Exec(context.Background(), query, newUserID, req.Login, string(hashedPassword), req.Email, time.Now())
 		if err != nil {
 			http.Error(w, "Ошибка сохранения пользователя", http.StatusInternalServerError)
 			log.Printf("RegisterUser\t Ошибка добавления пользователя в бд: %v", err)

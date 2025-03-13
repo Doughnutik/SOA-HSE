@@ -1,5 +1,5 @@
 CREATE TABLE IF NOT EXISTS user_info (
-    user_id INT PRIMARY KEY,
+    user_id UUID PRIMARY KEY,
     login VARCHAR NOT NULL UNIQUE,
     password_hash VARCHAR NOT NULL,
     email VARCHAR NOT NULL UNIQUE,
@@ -9,7 +9,7 @@ CREATE TABLE IF NOT EXISTS user_info (
 );
 
 CREATE TABLE IF NOT EXISTS user_additional (
-    user_id INT PRIMARY KEY REFERENCES user_info(user_id) ON DELETE CASCADE,
+    user_id UUID PRIMARY KEY REFERENCES user_info(user_id) ON DELETE CASCADE,
     name VARCHAR NOT NULL,
     surname VARCHAR NOT NULL,
     date_of_birth TIMESTAMP,

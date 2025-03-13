@@ -1,26 +1,11 @@
-# Используем официальный образ Go для сборки
-FROM golang:1.23.7 AS builder
-
-# Установим рабочую директорию
+FROM golang:1.23.7
 WORKDIR /app
 
-# Копируем все исходные файлы в контейнер
+COPY go.mod go.sum ./
+RUN go mod download
+RUN go mod tidy
 COPY . .
 
-# Скачиваем зависимости
-RUN go mod tidy
-
-# Собираем приложение
-RUN go build -o user_service .
-
-# Создаем второй этап сборки для уменьшения размера контейнера
-FROM alpine:latest
-
-# Копируем бинарник из предыдущего этапа
-COPY --from=builder /app/user_service /usr/local/bin/user_service
-
-# Указываем, что контейнер будет слушать на порту 8081
-EXPOSE 8081
-
-# Команда для запуска приложения
-CMD ["/usr/local/bin/user_service"]
+RUN CGO_ENABLED=0 GOOS=linux go build -o /user_service
+EXPOSE 8080
+ENTRYPOINT ["/user_service"]
