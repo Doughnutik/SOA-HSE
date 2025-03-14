@@ -1,14 +1,23 @@
 @startuml
 
 entity "UserInfo" {
-	* user_id PRIMARY KEY : NUMBER
+	* user_id PRIMARY KEY : UUID
   	--
   	login : VARCHAR
   	password_hash : VARCHAR
+	registered_at : TIMESTAMP
+	changed_at: TIMESTAMP
+	last_login_time : TIMESTAMP
+}
+
+entity "UserAdditional" {
+  	* user_id FOREIGN KEY : UUID
+  	--
+	name : VARCHAR
+  	surname : VARCHAR
+	birth_date : VARCHAR
 	email : VARCHAR
-	registered_at : DATETIME
-	changed_at: DATETIME
-	last_login_time : DATETIME
+	phone_number : VARCHAR
 }
 
 entity "UserPage" {
@@ -19,21 +28,6 @@ entity "UserPage" {
 	privacy_level : NUMBER
 	subscribers : NUMBER[]
 	subscribed_for : NUMBER[]
-}
-
-entity "UserAdditional" {
-  	* user_id FOREIGN KEY : NUMBER
-  	--
-	name : VARCHAR
-  	surname : VARCHAR
-  	bio : TEXT
-	country : VARCHAR
-	city : VARCHAR
-	date_of_birth : DATETIME
-	gender : VARCHAR
-	occupation : VARCHAR
-	interests : VARCHAR[]
-	marital_status : VARCHAR
 }
 
 UserInfo ||--|| UserPage

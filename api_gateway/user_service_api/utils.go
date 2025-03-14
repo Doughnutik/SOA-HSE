@@ -16,7 +16,7 @@ var (
 	Cfg                   config.Config
 )
 
-func validateRequestBody(r *http.Request, v interface{}) error {
+func validateRequestBody[T any](r *http.Request, v *T) error {
 	if r.Header.Get("Content-Type") != "application/json" {
 		return ErrorIncorrectRequest
 	}
