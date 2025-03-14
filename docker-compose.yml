@@ -15,21 +15,16 @@ services:
     networks:
       - user_service_network
 
-  # api:
-  #   build: ./api
-  #   container_name: api_service
-  #   ports:
-  #     - "8081:8081"
-  #   environment:
-  #     DB_HOST: user_service_db
-  #     DB_PORT: 5432
-  #     DB_USER: postgres
-  #     DB_PASSWORD: YaGnI
-  #     DB_NAME: user_service
-  #   depends_on:
-  #     - user_service_db
-  #   networks:
-  #     - user_service_network
+  api:
+    platform: linux/arm64
+    build: ./api_gateway
+    container_name: api_gateway
+    ports:
+      - "8081:8081"
+    depends_on:
+      - user_service
+    networks:
+      - user_service_network
 
   user_service:
     platform: linux/arm64
