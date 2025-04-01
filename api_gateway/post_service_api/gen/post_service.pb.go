@@ -9,7 +9,6 @@ package gen
 import (
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
-	timestamppb "google.golang.org/protobuf/types/known/timestamppb"
 	reflect "reflect"
 	sync "sync"
 	unsafe "unsafe"
@@ -28,8 +27,8 @@ type Post struct {
 	Title         string                 `protobuf:"bytes,2,opt,name=title,proto3" json:"title,omitempty"`
 	Description   string                 `protobuf:"bytes,3,opt,name=description,proto3" json:"description,omitempty"`
 	CreatorId     string                 `protobuf:"bytes,4,opt,name=creator_id,json=creatorId,proto3" json:"creator_id,omitempty"`
-	CreatedAt     *timestamppb.Timestamp `protobuf:"bytes,5,opt,name=created_at,json=createdAt,proto3" json:"created_at,omitempty"`
-	UpdatedAt     *timestamppb.Timestamp `protobuf:"bytes,6,opt,name=updated_at,json=updatedAt,proto3" json:"updated_at,omitempty"`
+	CreatedAt     string                 `protobuf:"bytes,5,opt,name=created_at,json=createdAt,proto3" json:"created_at,omitempty"`
+	UpdatedAt     string                 `protobuf:"bytes,6,opt,name=updated_at,json=updatedAt,proto3" json:"updated_at,omitempty"`
 	IsPrivate     bool                   `protobuf:"varint,7,opt,name=is_private,json=isPrivate,proto3" json:"is_private,omitempty"`
 	Tags          []string               `protobuf:"bytes,8,rep,name=tags,proto3" json:"tags,omitempty"`
 	unknownFields protoimpl.UnknownFields
@@ -94,18 +93,18 @@ func (x *Post) GetCreatorId() string {
 	return ""
 }
 
-func (x *Post) GetCreatedAt() *timestamppb.Timestamp {
+func (x *Post) GetCreatedAt() string {
 	if x != nil {
 		return x.CreatedAt
 	}
-	return nil
+	return ""
 }
 
-func (x *Post) GetUpdatedAt() *timestamppb.Timestamp {
+func (x *Post) GetUpdatedAt() string {
 	if x != nil {
 		return x.UpdatedAt
 	}
-	return nil
+	return ""
 }
 
 func (x *Post) GetIsPrivate() bool {
@@ -670,17 +669,17 @@ var File_post_service_proto protoreflect.FileDescriptor
 
 const file_post_service_proto_rawDesc = "" +
 	"\n" +
-	"\x12post_service.proto\x12\vpostservice\x1a\x1fgoogle/protobuf/timestamp.proto\"\x96\x02\n" +
+	"\x12post_service.proto\x12\vpostservice\"\xde\x01\n" +
 	"\x04Post\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\tR\x02id\x12\x14\n" +
 	"\x05title\x18\x02 \x01(\tR\x05title\x12 \n" +
 	"\vdescription\x18\x03 \x01(\tR\vdescription\x12\x1d\n" +
 	"\n" +
-	"creator_id\x18\x04 \x01(\tR\tcreatorId\x129\n" +
+	"creator_id\x18\x04 \x01(\tR\tcreatorId\x12\x1d\n" +
 	"\n" +
-	"created_at\x18\x05 \x01(\v2\x1a.google.protobuf.TimestampR\tcreatedAt\x129\n" +
+	"created_at\x18\x05 \x01(\tR\tcreatedAt\x12\x1d\n" +
 	"\n" +
-	"updated_at\x18\x06 \x01(\v2\x1a.google.protobuf.TimestampR\tupdatedAt\x12\x1d\n" +
+	"updated_at\x18\x06 \x01(\tR\tupdatedAt\x12\x1d\n" +
 	"\n" +
 	"is_private\x18\a \x01(\bR\tisPrivate\x12\x12\n" +
 	"\x04tags\x18\b \x03(\tR\x04tags\"\x9a\x01\n" +
@@ -748,39 +747,36 @@ func file_post_service_proto_rawDescGZIP() []byte {
 
 var file_post_service_proto_msgTypes = make([]protoimpl.MessageInfo, 11)
 var file_post_service_proto_goTypes = []any{
-	(*Post)(nil),                  // 0: postservice.Post
-	(*PostCreateData)(nil),        // 1: postservice.PostCreateData
-	(*PostCreateResponse)(nil),    // 2: postservice.PostCreateResponse
-	(*PostGetData)(nil),           // 3: postservice.PostGetData
-	(*PostGetResponse)(nil),       // 4: postservice.PostGetResponse
-	(*PostUpdateData)(nil),        // 5: postservice.PostUpdateData
-	(*PostUpdateResponse)(nil),    // 6: postservice.PostUpdateResponse
-	(*PostDeleteData)(nil),        // 7: postservice.PostDeleteData
-	(*PostDeleteResponse)(nil),    // 8: postservice.PostDeleteResponse
-	(*ListPostsData)(nil),         // 9: postservice.ListPostsData
-	(*ListPostsResponse)(nil),     // 10: postservice.ListPostsResponse
-	(*timestamppb.Timestamp)(nil), // 11: google.protobuf.Timestamp
+	(*Post)(nil),               // 0: postservice.Post
+	(*PostCreateData)(nil),     // 1: postservice.PostCreateData
+	(*PostCreateResponse)(nil), // 2: postservice.PostCreateResponse
+	(*PostGetData)(nil),        // 3: postservice.PostGetData
+	(*PostGetResponse)(nil),    // 4: postservice.PostGetResponse
+	(*PostUpdateData)(nil),     // 5: postservice.PostUpdateData
+	(*PostUpdateResponse)(nil), // 6: postservice.PostUpdateResponse
+	(*PostDeleteData)(nil),     // 7: postservice.PostDeleteData
+	(*PostDeleteResponse)(nil), // 8: postservice.PostDeleteResponse
+	(*ListPostsData)(nil),      // 9: postservice.ListPostsData
+	(*ListPostsResponse)(nil),  // 10: postservice.ListPostsResponse
 }
 var file_post_service_proto_depIdxs = []int32{
-	11, // 0: postservice.Post.created_at:type_name -> google.protobuf.Timestamp
-	11, // 1: postservice.Post.updated_at:type_name -> google.protobuf.Timestamp
-	0,  // 2: postservice.PostGetResponse.post:type_name -> postservice.Post
-	0,  // 3: postservice.ListPostsResponse.posts:type_name -> postservice.Post
-	1,  // 4: postservice.PostService.CreatePost:input_type -> postservice.PostCreateData
-	3,  // 5: postservice.PostService.GetPost:input_type -> postservice.PostGetData
-	5,  // 6: postservice.PostService.UpdatePost:input_type -> postservice.PostUpdateData
-	7,  // 7: postservice.PostService.DeletePost:input_type -> postservice.PostDeleteData
-	9,  // 8: postservice.PostService.ListPosts:input_type -> postservice.ListPostsData
-	2,  // 9: postservice.PostService.CreatePost:output_type -> postservice.PostCreateResponse
-	4,  // 10: postservice.PostService.GetPost:output_type -> postservice.PostGetResponse
-	6,  // 11: postservice.PostService.UpdatePost:output_type -> postservice.PostUpdateResponse
-	8,  // 12: postservice.PostService.DeletePost:output_type -> postservice.PostDeleteResponse
-	10, // 13: postservice.PostService.ListPosts:output_type -> postservice.ListPostsResponse
-	9,  // [9:14] is the sub-list for method output_type
-	4,  // [4:9] is the sub-list for method input_type
-	4,  // [4:4] is the sub-list for extension type_name
-	4,  // [4:4] is the sub-list for extension extendee
-	0,  // [0:4] is the sub-list for field type_name
+	0,  // 0: postservice.PostGetResponse.post:type_name -> postservice.Post
+	0,  // 1: postservice.ListPostsResponse.posts:type_name -> postservice.Post
+	1,  // 2: postservice.PostService.CreatePost:input_type -> postservice.PostCreateData
+	3,  // 3: postservice.PostService.GetPost:input_type -> postservice.PostGetData
+	5,  // 4: postservice.PostService.UpdatePost:input_type -> postservice.PostUpdateData
+	7,  // 5: postservice.PostService.DeletePost:input_type -> postservice.PostDeleteData
+	9,  // 6: postservice.PostService.ListPosts:input_type -> postservice.ListPostsData
+	2,  // 7: postservice.PostService.CreatePost:output_type -> postservice.PostCreateResponse
+	4,  // 8: postservice.PostService.GetPost:output_type -> postservice.PostGetResponse
+	6,  // 9: postservice.PostService.UpdatePost:output_type -> postservice.PostUpdateResponse
+	8,  // 10: postservice.PostService.DeletePost:output_type -> postservice.PostDeleteResponse
+	10, // 11: postservice.PostService.ListPosts:output_type -> postservice.ListPostsResponse
+	7,  // [7:12] is the sub-list for method output_type
+	2,  // [2:7] is the sub-list for method input_type
+	2,  // [2:2] is the sub-list for extension type_name
+	2,  // [2:2] is the sub-list for extension extendee
+	0,  // [0:2] is the sub-list for field type_name
 }
 
 func init() { file_post_service_proto_init() }

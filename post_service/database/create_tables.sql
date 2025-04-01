@@ -1,5 +1,5 @@
 CREATE TABLE IF NOT EXISTS post_info(
-    post_id UUID PRIMARY KEY,
+    post_id TEXT PRIMARY KEY,
     title TEXT NOT NULL,
     description TEXT NOT NULL,
     creator_id UUID NOT NULL,

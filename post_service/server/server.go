@@ -7,7 +7,6 @@ import (
 
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
-	"google.golang.org/protobuf/types/known/timestamppb"
 
 	gen "post_service/gen"
 )
@@ -34,8 +33,8 @@ func (s *PostServiceServer) CreatePost(ctx context.Context, req *gen.PostCreateD
 		Title:       req.Title,
 		Description: req.Description,
 		CreatorId:   req.CreatorId,
-		CreatedAt:   timestamppb.Now(),
-		UpdatedAt:   timestamppb.Now(),
+		CreatedAt:   time.Now().Format("2006-01-02 15:04:05"),
+		UpdatedAt:   time.Now().Format("2006-01-02 15:04:05"),
 		IsPrivate:   req.IsPrivate,
 		Tags:        req.Tags,
 	}
@@ -74,7 +73,7 @@ func (s *PostServiceServer) UpdatePost(ctx context.Context, req *gen.PostUpdateD
 	post.Description = req.Description
 	post.IsPrivate = req.IsPrivate
 	post.Tags = req.Tags
-	post.UpdatedAt = timestamppb.Now()
+	post.UpdatedAt = time.Now().Format("2006-01-02 15:04:05")
 
 	return &gen.PostUpdateResponse{Success: true}, nil
 }

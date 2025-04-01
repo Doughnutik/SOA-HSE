@@ -7,6 +7,7 @@ require github.com/joho/godotenv v1.5.1
 require github.com/go-chi/chi/v5 v5.2.1
 
 require (
+	github.com/go-chi/chi v1.5.5 // indirect
 	golang.org/x/net v0.34.0 // indirect
 	golang.org/x/sys v0.29.0 // indirect
 	golang.org/x/text v0.21.0 // indirect

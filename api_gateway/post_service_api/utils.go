@@ -50,8 +50,8 @@ func validateRequestBody[T any](r *http.Request, v *T) error {
 }
 
 func connectToGRPCServer() (*grpc.ClientConn, error) {
-	url := Cfg.PostServiceUrl
-	conn, err := grpc.NewClient(url, grpc.WithTransportCredentials(insecure.NewCredentials()))
+	// url := Cfg.PostServiceUrl
+	conn, err := grpc.NewClient("localhost:8282", grpc.WithTransportCredentials(insecure.NewCredentials()))
 	if err != nil {
 		log.Printf("connectToGRPCServer\t ошибка подключения к grpc серверу: %v", err)
 		return nil, fmt.Errorf("failed to connect to gRPC server: %v", err)

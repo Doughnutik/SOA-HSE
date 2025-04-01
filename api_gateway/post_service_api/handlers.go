@@ -8,9 +8,11 @@ import (
 	"time"
 
 	gen "api_gateway/post_service_api/gen"
+
+	"github.com/go-chi/chi/v5"
 )
 
-func createPostHandler(w http.ResponseWriter, r *http.Request) {
+func CreatePostHandler(w http.ResponseWriter, r *http.Request) {
 	conn, err := connectToGRPCServer()
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
@@ -41,7 +43,7 @@ func createPostHandler(w http.ResponseWriter, r *http.Request) {
 	copyGRPCResponse(w, grpcResponse, grpcError)
 }
 
-func getPostHandler(w http.ResponseWriter, r *http.Request) {
+func GetPostHandler(w http.ResponseWriter, r *http.Request) {
 	conn, err := connectToGRPCServer()
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
@@ -59,6 +61,8 @@ func getPostHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	postID := chi.URLParam(r, "post_id")
+	req.Id = postID
 	client := gen.NewPostServiceClient(conn)
 	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
 	defer cancel()
@@ -72,7 +76,7 @@ func getPostHandler(w http.ResponseWriter, r *http.Request) {
 	copyGRPCResponse(w, grpcResponse, grpcError)
 }
 
-func updatePostHandler(w http.ResponseWriter, r *http.Request) {
+func UpdatePostHandler(w http.ResponseWriter, r *http.Request) {
 	conn, err := connectToGRPCServer()
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
@@ -90,6 +94,8 @@ func updatePostHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	postID := chi.URLParam(r, "post_id")
+	req.Id = postID
 	client := gen.NewPostServiceClient(conn)
 	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
 	defer cancel()
@@ -103,7 +109,7 @@ func updatePostHandler(w http.ResponseWriter, r *http.Request) {
 	copyGRPCResponse(w, grpcResponse, grpcError)
 }
 
-func deletePostHandler(w http.ResponseWriter, r *http.Request) {
+func DeletePostHandler(w http.ResponseWriter, r *http.Request) {
 	conn, err := connectToGRPCServer()
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
@@ -121,6 +127,8 @@ func deletePostHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	postID := chi.URLParam(r, "post_id")
+	req.Id = postID
 	client := gen.NewPostServiceClient(conn)
 	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
 	defer cancel()
@@ -134,7 +142,7 @@ func deletePostHandler(w http.ResponseWriter, r *http.Request) {
 	copyGRPCResponse(w, grpcResponse, grpcError)
 }
 
-func listPostsHandler(w http.ResponseWriter, r *http.Request) {
+func ListPostsHandler(w http.ResponseWriter, r *http.Request) {
 	conn, err := connectToGRPCServer()
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
