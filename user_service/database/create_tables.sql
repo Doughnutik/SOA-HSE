@@ -1,0 +1,17 @@
+CREATE TABLE IF NOT EXISTS user_info (
+    user_id UUID PRIMARY KEY,
+    login VARCHAR NOT NULL UNIQUE,
+    password_hash VARCHAR NOT NULL,
+    registered_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    changed_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    last_login_time TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE IF NOT EXISTS user_additional (
+    user_id UUID PRIMARY KEY REFERENCES user_info(user_id) ON DELETE CASCADE,
+    name VARCHAR DEFAULT '',
+    surname VARCHAR DEFAULT '',
+    birth_date VARCHAR DEFAULT '0000-00-00',
+    email VARCHAR NOT NULL UNIQUE,
+    phone_number VARCHAR DEFAULT ''
+);

@@ -1,0 +1,52 @@
+version: '3.8'
+
+services:
+  user_service_db:
+    image: postgres:latest
+    container_name: user_service_db
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: YaGnI
+      POSTGRES_DB: user_service
+    ports:
+      - "5432:5432"
+    volumes:
+      - db_data:/var/lib/postgresql/data
+    networks:
+      - user_service_network
+
+  api:
+    platform: linux/arm64
+    build: ./api_gateway
+    container_name: api_gateway
+    ports:
+      - "8081:8081"
+    depends_on:
+      - user_service
+    networks:
+      - user_service_network
+
+  user_service:
+    platform: linux/arm64
+    build: ./user_service
+    container_name: user_service
+    ports:
+      - "8080:8080"
+    environment:
+      DB_HOST: user_service_db
+      DB_PORT: 5432
+      DB_USER: postgres
+      DB_PASSWORD: YaGnI
+      DB_NAME: user_service
+    depends_on:
+      - user_service_db
+    networks:
+      - user_service_network
+
+volumes:
+  db_data:
+    driver: local
+
+networks:
+  user_service_network:
+    driver: bridge
