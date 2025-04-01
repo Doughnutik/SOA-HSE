@@ -2,6 +2,7 @@ package main
 
 import (
 	"context"
+	"fmt"
 	"log"
 
 	"google.golang.org/grpc"
@@ -22,18 +23,19 @@ func main() {
 	client := post_service.NewPostServiceClient(conn)
 
 	// Создание нового поста
-	req := &post_service.PostCreateData{
-		Title:       "My new post",
-		Description: "This is a description",
-		CreatorId:   "user123",
-		IsPrivate:   false,
-		Tags:        []string{"tag1", "tag2"},
+	req := &post_service.ListPostsData{
+		Page:      1,
+		Limit:     10,
+		CreatorId: "user123",
 	}
 
-	res, err := client.CreatePost(context.Background(), req)
+	res, err := client.ListPosts(context.Background(), req)
 	if err != nil {
 		log.Fatalf("could not create post: %v", err)
 	}
+	for _, post := range res.GetPosts() {
+		fmt.Println(post)
+	}
 
-	log.Printf("Created post with ID: %s", res.GetId())
+	// log.Printf("Created post with ID: %s", res.GetId())
 }

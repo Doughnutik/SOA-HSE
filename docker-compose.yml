@@ -13,7 +13,21 @@ services:
     volumes:
       - db_data:/var/lib/postgresql/data
     networks:
-      - user_service_network
+      - service_network
+
+  post_service_db:
+    image: postgres:latest
+    container_name: post_service_db
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: YaGnI
+      POSTGRES_DB: post_service
+    ports:
+      - "2345:2345"
+    volumes:
+      - db_data:/var/lib/postgresql/data2
+    networks:
+      - service_network
 
   api:
     platform: linux/arm64
@@ -24,7 +38,7 @@ services:
     depends_on:
       - user_service
     networks:
-      - user_service_network
+      - service_network
 
   user_service:
     platform: linux/arm64
@@ -41,12 +55,29 @@ services:
     depends_on:
       - user_service_db
     networks:
-      - user_service_network
+      - service_network
+  
+  post_service:
+    platform: linux/arm64
+    build: ./post_service
+    container_name: post_service
+    ports:
+      - "8082:8082"
+    environment:
+      DB_HOST: post_service_db
+      DB_PORT: 2345
+      DB_USER: postgres
+      DB_PASSWORD: YaGnI
+      DB_NAME: post_service
+    depends_on:
+      - post_service_db
+    networks:
+      - service_network
 
 volumes:
   db_data:
     driver: local
 
 networks:
-  user_service_network:
+  service_network:
     driver: bridge

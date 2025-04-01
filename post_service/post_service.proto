@@ -39,6 +39,7 @@ message PostCreateResponse {
 
 message PostGetData {
   string id = 1;
+  string creator_id = 2;
 }
 
 message PostGetResponse {
@@ -70,6 +71,7 @@ message PostDeleteResponse {
 message ListPostsData {
   int32 page = 1;
   int32 limit = 2;
+  string creator_id = 3;
 }
 
 message ListPostsResponse {

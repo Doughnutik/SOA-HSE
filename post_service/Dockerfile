@@ -6,6 +6,6 @@ RUN go mod download
 RUN go mod tidy
 COPY . .
 
-RUN CGO_ENABLED=0 GOOS=linux go build -o /api_gateway
-EXPOSE 8080
-ENTRYPOINT ["/api_gateway"]
+RUN CGO_ENABLED=0 GOOS=linux go build -o /post_service
+EXPOSE 8082
+ENTRYPOINT ["/post_service"]

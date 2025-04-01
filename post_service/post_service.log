@@ -1,0 +1,7 @@
+2025/04/01 20:18:27 
+
+2025/04/01 20:18:27 База данных успешно подключена
+2025/04/01 20:18:27 Ошибка выполнения миграции: failed to connect to `user=postgres database=post_service`:
+	127.0.0.1:2345 (127.0.0.1): dial error: dial tcp 127.0.0.1:2345: connect: connection refused
+	127.0.0.1:2345 (127.0.0.1): dial error: dial tcp 127.0.0.1:2345: connect: connection refused
+2025/04/01 20:18:27 Ошибка создания таблиц в БД

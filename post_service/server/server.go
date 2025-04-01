@@ -1,51 +1,110 @@
-package main
+package server
 
 import (
 	"context"
-	"log"
-	"net"
+	"sync"
+	"time"
 
-	"google.golang.org/grpc"
-	"google.golang.org/grpc/reflection"
+	"google.golang.org/grpc/codes"
+	"google.golang.org/grpc/status"
+	"google.golang.org/protobuf/types/known/timestamppb"
 
-	post_service "post_service/gen"
+	gen "post_service/gen"
 )
 
-// Сервисы, которые реализуют интерфейс из post_service_grpc.pb.go
-type server struct {
-	post_service.UnimplementedPostServiceServer
+type PostServiceServer struct {
+	gen.UnimplementedPostServiceServer
+	mutex sync.RWMutex
+	posts map[string]*gen.Post
 }
 
-// Реализация метода CreatePost
-func (s *server) CreatePost(ctx context.Context, req *post_service.PostCreateData) (*post_service.PostCreateResponse, error) {
-	// Логика создания поста
-	log.Println("Creating post:", req.GetTitle())
-
-	// Вернуть ответ с ID
-	return &post_service.PostCreateResponse{
-		Id: "generated_id", // Пример ID
-	}, nil
+func NewPostServiceServer() *PostServiceServer {
+	return &PostServiceServer{
+		posts: make(map[string]*gen.Post),
+	}
 }
 
-func main() {
-	// Создание TCP listener
-	lis, err := net.Listen("tcp", ":50051")
-	if err != nil {
-		log.Fatalf("failed to listen: %v", err)
+func (s *PostServiceServer) CreatePost(ctx context.Context, req *gen.PostCreateData) (*gen.PostCreateResponse, error) {
+	s.mutex.Lock()
+	defer s.mutex.Unlock()
+
+	id := time.Now().Format("20060102150405")
+	s.posts[id] = &gen.Post{
+		Id:          id,
+		Title:       req.Title,
+		Description: req.Description,
+		CreatorId:   req.CreatorId,
+		CreatedAt:   timestamppb.Now(),
+		UpdatedAt:   timestamppb.Now(),
+		IsPrivate:   req.IsPrivate,
+		Tags:        req.Tags,
 	}
 
-	// Создание gRPC сервера
-	grpcServer := grpc.NewServer()
+	return &gen.PostCreateResponse{Id: id}, nil
+}
 
-	// Регистрация сервера
-	post_service.RegisterPostServiceServer(grpcServer, &server{})
+func (s *PostServiceServer) GetPost(ctx context.Context, req *gen.PostGetData) (*gen.PostGetResponse, error) {
+	s.mutex.RLock()
+	defer s.mutex.RUnlock()
 
-	// Включение reflection для gRPC серверов
-	reflection.Register(grpcServer)
-
-	// Запуск сервера
-	log.Println("Starting server on :50051")
-	if err := grpcServer.Serve(lis); err != nil {
-		log.Fatalf("failed to serve: %v", err)
+	post, exists := s.posts[req.Id]
+	if !exists {
+		return nil, status.Errorf(status.Code(status.Error(codes.NotFound, "post not found")), "post not found")
 	}
+	if req.CreatorId != post.GetCreatorId() {
+		return nil, status.Errorf(status.Code(status.Error(codes.PermissionDenied, "неверный creatorId")), "неверный creatorId")
+	}
+
+	return &gen.PostGetResponse{Post: post}, nil
+}
+
+func (s *PostServiceServer) UpdatePost(ctx context.Context, req *gen.PostUpdateData) (*gen.PostUpdateResponse, error) {
+	s.mutex.Lock()
+	defer s.mutex.Unlock()
+
+	post, exists := s.posts[req.Id]
+	if !exists {
+		return nil, status.Errorf(status.Code(status.Error(codes.NotFound, "post not found")), "post not found")
+	}
+	if req.CreatorId != post.GetCreatorId() {
+		return nil, status.Errorf(status.Code(status.Error(codes.PermissionDenied, "неверный creatorId")), "неверный creatorId")
+	}
+
+	post.Title = req.Title
+	post.Description = req.Description
+	post.IsPrivate = req.IsPrivate
+	post.Tags = req.Tags
+	post.UpdatedAt = timestamppb.Now()
+
+	return &gen.PostUpdateResponse{Success: true}, nil
+}
+
+func (s *PostServiceServer) DeletePost(ctx context.Context, req *gen.PostDeleteData) (*gen.PostDeleteResponse, error) {
+	s.mutex.Lock()
+	defer s.mutex.Unlock()
+
+	post, exists := s.posts[req.Id]
+	if !exists {
+		return nil, status.Errorf(status.Code(status.Error(codes.NotFound, "post not found")), "post not found")
+	}
+	if req.CreatorId != post.GetCreatorId() {
+		return nil, status.Errorf(status.Code(status.Error(codes.PermissionDenied, "неверный creatorId")), "неверный creatorId")
+	}
+
+	delete(s.posts, req.Id)
+	return &gen.PostDeleteResponse{Success: true}, nil
+}
+
+func (s *PostServiceServer) ListPosts(ctx context.Context, req *gen.ListPostsData) (*gen.ListPostsResponse, error) {
+	s.mutex.RLock()
+	defer s.mutex.RUnlock()
+
+	var posts []*gen.Post
+	for _, post := range s.posts {
+		if post.CreatorId == req.CreatorId {
+			posts = append(posts, post)
+		}
+	}
+
+	return &gen.ListPostsResponse{Posts: posts}, nil
 }
