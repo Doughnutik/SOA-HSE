@@ -239,3 +239,13 @@ func TestGetProfile(t *testing.T) {
 	}
 
 }
+
+// curl -X 'GET' \
+//   'http://127.0.0.1:8081/profile' \
+//   -H 'accept: */*' \
+//   -H 'Content-Type: application/json' \
+//   -d '{
+//   "login": "name",
+//   "password": "password",
+//   "email": "user@example.com"
+// }'
