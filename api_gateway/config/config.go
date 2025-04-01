@@ -11,6 +11,7 @@ type Config struct {
 	Port           string
 	Host           string
 	UserServiceUrl string
+	PostServiceUrl string
 }
 
 func LoadConfig() (*Config, error) {
@@ -23,6 +24,7 @@ func LoadConfig() (*Config, error) {
 		Port:           getEnv("PORT", "8081"),
 		Host:           getEnv("HOST", "127.0.0.1"),
 		UserServiceUrl: getEnv("USER_SERVICE_URL", "http://user_service:8080"),
+		PostServiceUrl: getEnv("POST_SERVICE_URL", "http://post_service:8282"),
 	}, nil
 }
 

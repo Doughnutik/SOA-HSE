@@ -7,5 +7,5 @@ RUN go mod tidy
 COPY . .
 
 RUN CGO_ENABLED=0 GOOS=linux go build -o /api_gateway
-EXPOSE 8080
+EXPOSE 8081
 ENTRYPOINT ["/api_gateway"]

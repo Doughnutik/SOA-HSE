@@ -7,4 +7,4 @@ ENV POSTGRES_PASSWORD=YaGnI
 ENV POSTGRES_DB=post_service
 
 # При необходимости можно указать дополнительные порты
-EXPOSE 2345
+EXPOSE 5432

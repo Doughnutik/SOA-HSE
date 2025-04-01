@@ -1,7 +1,5 @@
-CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
-
-CREATE TABLE post_info (
-    post_id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+CREATE TABLE IF NOT EXISTS post_info(
+    post_id UUID PRIMARY KEY,
     title TEXT NOT NULL,
     description TEXT NOT NULL,
     creator_id UUID NOT NULL,

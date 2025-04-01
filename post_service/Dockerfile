@@ -7,5 +7,5 @@ RUN go mod tidy
 COPY . .
 
 RUN CGO_ENABLED=0 GOOS=linux go build -o /post_service
-EXPOSE 8082
+EXPOSE 8282
 ENTRYPOINT ["/post_service"]
