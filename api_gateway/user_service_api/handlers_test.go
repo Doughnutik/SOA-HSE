@@ -239,3 +239,16 @@ func TestGetProfile(t *testing.T) {
 	}
 
 }
+
+// curl -X 'POST' \
+//   'http://127.0.0.1:8081/posts' \
+//   -H 'accept: */*' \
+//   -H 'Content-Type: application/json' \
+//   -d '{
+//   "login": "name",
+//   "password": "password",
+//   "title": "post1",
+//   "description": "desc1",
+//   "tags": ["first", "second"],
+//   "isPrivate": 0
+// }'
