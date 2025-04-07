@@ -30,32 +30,3 @@ func main() {
 	log.Printf("Сервер запущен на порту %s", cfg.Port)
 	log.Fatal(http.ListenAndServe(":"+cfg.Port, srv.Router))
 }
-
-// package main
-
-// import (
-// 	"fmt"
-// 	"log"
-// 	"net/http"
-
-// 	"github.com/go-chi/chi"
-// )
-
-// func GetPostHandler(w http.ResponseWriter, r *http.Request) {
-// 	// Извлекаем post_id из URL
-// 	postID := chi.URLParam(r, "post_id")
-// 	log.Printf("Получен post_id: %s", postID)
-
-// 	// Возвращаем post_id в ответе
-// 	fmt.Fprintf(w, "Post ID: %s", postID)
-// }
-
-// func main() {
-// 	r := chi.NewRouter()
-
-// 	// Определение маршрута с параметром post_id
-// 	r.Get("/posts/{post_id}", GetPostHandler)
-
-// 	log.Println("Сервер слушает на порту 8081")
-// 	log.Fatal(http.ListenAndServe(":8081", r))
-// }

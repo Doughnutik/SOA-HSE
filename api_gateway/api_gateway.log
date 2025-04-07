@@ -107,3 +107,33 @@
 2025/04/01 23:36:46 
 
 2025/04/01 23:36:46 Сервер запущен на порту 8081
+2025/04/07 20:13:13 
+
+2025/04/07 20:13:13 Сервер запущен на порту 8081
+2025/04/07 20:13:18 createPostHandler	 ошибка запроса к gRPC серверу: failed to exit idle mode: invalid target address http://127.0.0.1:8082, error info: address http://127.0.0.1:8082:443: too many colons in address
+2025/04/07 20:15:21 
+
+2025/04/07 20:15:21 Сервер запущен на порту 8081
+2025/04/07 20:36:28 getPostHandler	 ошибка запроса к gRPC серверу: rpc error: code = DeadlineExceeded desc = context deadline exceeded
+2025/04/07 20:37:24 getPostHandler	 ошибка запроса к gRPC серверу: rpc error: code = DeadlineExceeded desc = context deadline exceeded
+2025/04/07 20:38:04 createPostHandler	 ошибка запроса к gRPC серверу: rpc error: code = DeadlineExceeded desc = context deadline exceeded
+2025/04/07 20:38:38 getPostHandler	 ошибка запроса к gRPC серверу: rpc error: code = DeadlineExceeded desc = context deadline exceeded
+2025/04/07 20:39:46 
+
+2025/04/07 20:39:46 Сервер запущен на порту 8081
+2025/04/07 20:40:46 getPostHandler	 ошибка запроса к gRPC серверу: rpc error: code = Unavailable desc = connection error: desc = "transport: Error while dialing: dial tcp 127.0.0.1:8082: connect: connection refused"
+2025/04/07 20:41:31 
+
+2025/04/07 20:41:31 Сервер запущен на порту 8081
+2025/04/07 20:47:49 
+
+2025/04/07 20:47:49 Сервер запущен на порту 8081
+2025/04/07 20:48:10 
+
+2025/04/07 20:48:10 Сервер запущен на порту 8081
+2025/04/07 20:53:31 
+
+2025/04/07 20:53:31 Сервер запущен на порту 8081
+2025/04/07 21:17:16 
+
+2025/04/07 21:17:16 Сервер запущен на порту 8081

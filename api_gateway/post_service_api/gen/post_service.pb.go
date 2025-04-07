@@ -26,10 +26,10 @@ type Post struct {
 	Id            string                 `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
 	Title         string                 `protobuf:"bytes,2,opt,name=title,proto3" json:"title,omitempty"`
 	Description   string                 `protobuf:"bytes,3,opt,name=description,proto3" json:"description,omitempty"`
-	CreatorId     string                 `protobuf:"bytes,4,opt,name=creator_id,json=creatorId,proto3" json:"creator_id,omitempty"`
-	CreatedAt     string                 `protobuf:"bytes,5,opt,name=created_at,json=createdAt,proto3" json:"created_at,omitempty"`
-	UpdatedAt     string                 `protobuf:"bytes,6,opt,name=updated_at,json=updatedAt,proto3" json:"updated_at,omitempty"`
-	IsPrivate     bool                   `protobuf:"varint,7,opt,name=is_private,json=isPrivate,proto3" json:"is_private,omitempty"`
+	CreatorId     string                 `protobuf:"bytes,4,opt,name=creatorId,proto3" json:"creatorId,omitempty"`
+	CreatedAt     string                 `protobuf:"bytes,5,opt,name=createdAt,proto3" json:"createdAt,omitempty"`
+	UpdatedAt     string                 `protobuf:"bytes,6,opt,name=updatedAt,proto3" json:"updatedAt,omitempty"`
+	IsPrivate     bool                   `protobuf:"varint,7,opt,name=isPrivate,proto3" json:"isPrivate,omitempty"`
 	Tags          []string               `protobuf:"bytes,8,rep,name=tags,proto3" json:"tags,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
@@ -125,8 +125,8 @@ type PostCreateData struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Title         string                 `protobuf:"bytes,1,opt,name=title,proto3" json:"title,omitempty"`
 	Description   string                 `protobuf:"bytes,2,opt,name=description,proto3" json:"description,omitempty"`
-	CreatorId     string                 `protobuf:"bytes,3,opt,name=creator_id,json=creatorId,proto3" json:"creator_id,omitempty"`
-	IsPrivate     bool                   `protobuf:"varint,4,opt,name=is_private,json=isPrivate,proto3" json:"is_private,omitempty"`
+	CreatorId     string                 `protobuf:"bytes,3,opt,name=creatorId,proto3" json:"creatorId,omitempty"`
+	IsPrivate     bool                   `protobuf:"varint,4,opt,name=isPrivate,proto3" json:"isPrivate,omitempty"`
 	Tags          []string               `protobuf:"bytes,5,rep,name=tags,proto3" json:"tags,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
@@ -244,7 +244,7 @@ func (x *PostCreateResponse) GetId() string {
 type PostGetData struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Id            string                 `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
-	CreatorId     string                 `protobuf:"bytes,2,opt,name=creator_id,json=creatorId,proto3" json:"creator_id,omitempty"`
+	CreatorId     string                 `protobuf:"bytes,2,opt,name=creatorId,proto3" json:"creatorId,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -342,8 +342,8 @@ type PostUpdateData struct {
 	Id            string                 `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
 	Title         string                 `protobuf:"bytes,2,opt,name=title,proto3" json:"title,omitempty"`
 	Description   string                 `protobuf:"bytes,3,opt,name=description,proto3" json:"description,omitempty"`
-	CreatorId     string                 `protobuf:"bytes,4,opt,name=creator_id,json=creatorId,proto3" json:"creator_id,omitempty"`
-	IsPrivate     bool                   `protobuf:"varint,5,opt,name=is_private,json=isPrivate,proto3" json:"is_private,omitempty"`
+	CreatorId     string                 `protobuf:"bytes,4,opt,name=creatorId,proto3" json:"creatorId,omitempty"`
+	IsPrivate     bool                   `protobuf:"varint,5,opt,name=isPrivate,proto3" json:"isPrivate,omitempty"`
 	Tags          []string               `protobuf:"bytes,6,rep,name=tags,proto3" json:"tags,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
@@ -468,7 +468,7 @@ func (x *PostUpdateResponse) GetSuccess() bool {
 type PostDeleteData struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Id            string                 `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
-	CreatorId     string                 `protobuf:"bytes,2,opt,name=creator_id,json=creatorId,proto3" json:"creator_id,omitempty"`
+	CreatorId     string                 `protobuf:"bytes,2,opt,name=creatorId,proto3" json:"creatorId,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -565,7 +565,7 @@ type ListPostsData struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Page          int32                  `protobuf:"varint,1,opt,name=page,proto3" json:"page,omitempty"`
 	Limit         int32                  `protobuf:"varint,2,opt,name=limit,proto3" json:"limit,omitempty"`
-	CreatorId     string                 `protobuf:"bytes,3,opt,name=creator_id,json=creatorId,proto3" json:"creator_id,omitempty"`
+	CreatorId     string                 `protobuf:"bytes,3,opt,name=creatorId,proto3" json:"creatorId,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -669,58 +669,47 @@ var File_post_service_proto protoreflect.FileDescriptor
 
 const file_post_service_proto_rawDesc = "" +
 	"\n" +
-	"\x12post_service.proto\x12\vpostservice\"\xde\x01\n" +
+	"\x12post_service.proto\x12\vpostservice\"\xda\x01\n" +
 	"\x04Post\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\tR\x02id\x12\x14\n" +
 	"\x05title\x18\x02 \x01(\tR\x05title\x12 \n" +
-	"\vdescription\x18\x03 \x01(\tR\vdescription\x12\x1d\n" +
-	"\n" +
-	"creator_id\x18\x04 \x01(\tR\tcreatorId\x12\x1d\n" +
-	"\n" +
-	"created_at\x18\x05 \x01(\tR\tcreatedAt\x12\x1d\n" +
-	"\n" +
-	"updated_at\x18\x06 \x01(\tR\tupdatedAt\x12\x1d\n" +
-	"\n" +
-	"is_private\x18\a \x01(\bR\tisPrivate\x12\x12\n" +
-	"\x04tags\x18\b \x03(\tR\x04tags\"\x9a\x01\n" +
+	"\vdescription\x18\x03 \x01(\tR\vdescription\x12\x1c\n" +
+	"\tcreatorId\x18\x04 \x01(\tR\tcreatorId\x12\x1c\n" +
+	"\tcreatedAt\x18\x05 \x01(\tR\tcreatedAt\x12\x1c\n" +
+	"\tupdatedAt\x18\x06 \x01(\tR\tupdatedAt\x12\x1c\n" +
+	"\tisPrivate\x18\a \x01(\bR\tisPrivate\x12\x12\n" +
+	"\x04tags\x18\b \x03(\tR\x04tags\"\x98\x01\n" +
 	"\x0ePostCreateData\x12\x14\n" +
 	"\x05title\x18\x01 \x01(\tR\x05title\x12 \n" +
-	"\vdescription\x18\x02 \x01(\tR\vdescription\x12\x1d\n" +
-	"\n" +
-	"creator_id\x18\x03 \x01(\tR\tcreatorId\x12\x1d\n" +
-	"\n" +
-	"is_private\x18\x04 \x01(\bR\tisPrivate\x12\x12\n" +
+	"\vdescription\x18\x02 \x01(\tR\vdescription\x12\x1c\n" +
+	"\tcreatorId\x18\x03 \x01(\tR\tcreatorId\x12\x1c\n" +
+	"\tisPrivate\x18\x04 \x01(\bR\tisPrivate\x12\x12\n" +
 	"\x04tags\x18\x05 \x03(\tR\x04tags\"$\n" +
 	"\x12PostCreateResponse\x12\x0e\n" +
-	"\x02id\x18\x01 \x01(\tR\x02id\"<\n" +
+	"\x02id\x18\x01 \x01(\tR\x02id\";\n" +
 	"\vPostGetData\x12\x0e\n" +
-	"\x02id\x18\x01 \x01(\tR\x02id\x12\x1d\n" +
-	"\n" +
-	"creator_id\x18\x02 \x01(\tR\tcreatorId\"8\n" +
+	"\x02id\x18\x01 \x01(\tR\x02id\x12\x1c\n" +
+	"\tcreatorId\x18\x02 \x01(\tR\tcreatorId\"8\n" +
 	"\x0fPostGetResponse\x12%\n" +
-	"\x04post\x18\x01 \x01(\v2\x11.postservice.PostR\x04post\"\xaa\x01\n" +
+	"\x04post\x18\x01 \x01(\v2\x11.postservice.PostR\x04post\"\xa8\x01\n" +
 	"\x0ePostUpdateData\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\tR\x02id\x12\x14\n" +
 	"\x05title\x18\x02 \x01(\tR\x05title\x12 \n" +
-	"\vdescription\x18\x03 \x01(\tR\vdescription\x12\x1d\n" +
-	"\n" +
-	"creator_id\x18\x04 \x01(\tR\tcreatorId\x12\x1d\n" +
-	"\n" +
-	"is_private\x18\x05 \x01(\bR\tisPrivate\x12\x12\n" +
+	"\vdescription\x18\x03 \x01(\tR\vdescription\x12\x1c\n" +
+	"\tcreatorId\x18\x04 \x01(\tR\tcreatorId\x12\x1c\n" +
+	"\tisPrivate\x18\x05 \x01(\bR\tisPrivate\x12\x12\n" +
 	"\x04tags\x18\x06 \x03(\tR\x04tags\".\n" +
 	"\x12PostUpdateResponse\x12\x18\n" +
-	"\asuccess\x18\x01 \x01(\bR\asuccess\"?\n" +
+	"\asuccess\x18\x01 \x01(\bR\asuccess\">\n" +
 	"\x0ePostDeleteData\x12\x0e\n" +
-	"\x02id\x18\x01 \x01(\tR\x02id\x12\x1d\n" +
-	"\n" +
-	"creator_id\x18\x02 \x01(\tR\tcreatorId\".\n" +
+	"\x02id\x18\x01 \x01(\tR\x02id\x12\x1c\n" +
+	"\tcreatorId\x18\x02 \x01(\tR\tcreatorId\".\n" +
 	"\x12PostDeleteResponse\x12\x18\n" +
-	"\asuccess\x18\x01 \x01(\bR\asuccess\"X\n" +
+	"\asuccess\x18\x01 \x01(\bR\asuccess\"W\n" +
 	"\rListPostsData\x12\x12\n" +
 	"\x04page\x18\x01 \x01(\x05R\x04page\x12\x14\n" +
-	"\x05limit\x18\x02 \x01(\x05R\x05limit\x12\x1d\n" +
-	"\n" +
-	"creator_id\x18\x03 \x01(\tR\tcreatorId\"<\n" +
+	"\x05limit\x18\x02 \x01(\x05R\x05limit\x12\x1c\n" +
+	"\tcreatorId\x18\x03 \x01(\tR\tcreatorId\"<\n" +
 	"\x11ListPostsResponse\x12'\n" +
 	"\x05posts\x18\x01 \x03(\v2\x11.postservice.PostR\x05posts2\xfd\x02\n" +
 	"\vPostService\x12J\n" +

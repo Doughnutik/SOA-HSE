@@ -19,7 +19,7 @@ func LoadConfig() (*Config, error) {
 	}
 
 	return &Config{
-		Port: getEnv("PORT", "8080"),
+		Port: getEnv("PORT", "8082"),
 		Host: getEnv("HOST", "127.0.0.1"),
 	}, nil
 }

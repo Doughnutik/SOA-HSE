@@ -37,5 +37,4 @@ func main() {
 		fmt.Println(post)
 	}
 
-	// log.Printf("Created post with ID: %s", res.GetId())
 }
