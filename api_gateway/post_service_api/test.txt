@@ -1,0 +1,65 @@
+curl -X 'POST' \
+  'http://127.0.0.1:8081/posts' \
+  -H 'accept: */*' \
+  -H 'Content-Type: application/json' \
+  -d '{
+  "login": "login",
+  "password": "password",
+  "title": "title",
+  "description": "description",
+  "tags": ["tag1", "tag2"],
+  "isPrivate": true
+}'
+
+curl -X 'POST' \
+  'http://127.0.0.1:8081/posts' \
+  -H 'accept: */*' \
+  -H 'Content-Type: application/json' \
+  -d '{
+  "login": "login",
+  "password": "password",
+  "title": "name",
+  "description": "new post",
+  "tags": ["post", "social_network"],
+  "isPrivate": true
+}'
+
+curl -X 'GET' \
+  'http://127.0.0.1:8081/posts/20250407205342' \
+  -H 'accept: */*' \
+  -H 'Content-Type: application/json' \
+  -d '{
+  "login": "login",
+  "password": "password"
+}'
+
+curl -X 'PUT' \
+  'http://127.0.0.1:8081/posts/20250407205342' \
+  -H 'accept: */*' \
+  -H 'Content-Type: application/json' \
+  -d '{
+  "login": "login",
+  "password": "password",
+  "title": "new_title",
+  "description": "new_description",
+  "tags": ["new_tag1", "new_tag2"],
+  "isPrivate": false
+}'
+
+curl -X 'DELETE' \
+  'http://127.0.0.1:8081/posts/20250407205342' \
+  -H 'accept: */*' \
+  -H 'Content-Type: application/json' \
+  -d '{
+  "login": "login",
+  "password": "password"
+}'
+
+curl -X 'GET' \
+  'http://127.0.0.1:8081/posts/list' \
+  -H 'accept: */*' \
+  -H 'Content-Type: application/json' \
+  -d '{
+  "login": "login",
+  "password": "password"
+}'

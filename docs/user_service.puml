@@ -20,17 +20,6 @@ entity "UserAdditional" {
 	phone_number : VARCHAR
 }
 
-entity "UserPage" {
-	* user_id FOREIGN KEY : NUMBER
-  	--
-  	posts_url : NUMBER[]
-	images_url : VARCHAR[]
-	privacy_level : NUMBER
-	subscribers : NUMBER[]
-	subscribed_for : NUMBER[]
-}
-
-UserInfo ||--|| UserPage
 UserInfo ||--|| UserAdditional
   
 @enduml
