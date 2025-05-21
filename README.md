@@ -3,3 +3,4 @@
 Есть 3 сервиса - **user_service**, **post_service**, **api_gateway**. Первый отвечает за пользователей, второй за посты. **api_gateway** перенаправляет запросы с **UI**
 на соответствующий сервис.
 Общение между **user_service** и **api_gateway** по **REST HTTP**, между **post_service** и **api_gateway** по **gRPC**.
+База данных **PostgreSQL**.
