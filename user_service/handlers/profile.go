@@ -5,6 +5,7 @@ import (
 	"errors"
 	"log"
 	"net/http"
+	"time"
 	"user_service/models"
 	"user_service/queries"
 
@@ -26,6 +27,11 @@ func GetProfile(db *pgxpool.Pool) http.HandlerFunc {
 		} else if err != nil {
 			http.Error(w, err.Error(), http.StatusUnauthorized)
 			return
+		}
+
+		err = queries.UpdateLastLoginTime(db, req.Login, time.Now())
+		if err != nil {
+			log.Printf("Ошибка обновления last_login_time: %v", err)
 		}
 
 		// Получаем профиль пользователя
@@ -63,6 +69,11 @@ func UpdateProfile(db *pgxpool.Pool) http.HandlerFunc {
 		} else if err != nil {
 			http.Error(w, err.Error(), http.StatusUnauthorized)
 			return
+		}
+
+		err = queries.UpdateLastLoginTime(db, req.Login, time.Now())
+		if err != nil {
+			log.Printf("Ошибка обновления last_login_time: %v", err)
 		}
 
 		err = queries.UpdatePersonData(db, *req)

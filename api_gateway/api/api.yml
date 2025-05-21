@@ -13,15 +13,15 @@ paths:
             schema:
               $ref: '#/components/schemas/RegistrationData'
       responses:
-        '200':
+        200:
           description: Пользователь успешно зарегистрирован
-        '400':
+        400:
           description: Некорректные параметры запроса
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/BadRequestError'
-        '409':
+        409:
           description: Пользователь с таким логином или email уже существует
           content:
             application/json:
@@ -37,7 +37,7 @@ paths:
                       error:
                         type: string
                         description: "Email уже существует"
-        '500':
+        500:
           description: Ошибка создания пользователя
           content:
             application/json:
@@ -54,17 +54,17 @@ paths:
             schema:
               $ref: '#/components/schemas/AuthData'
       responses:
-        '200':
+        200:
           description: Успешная аутентификация
-        '400':
+        400:
           description: Некорректные параметры запроса
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/BadRequestError'
-        '401':
+        401:
           description: Неверный логин или пароль
-        '500':
+        500:
           description: Ошибка аутентификации
           content:
             application/json:
@@ -81,21 +81,21 @@ paths:
             schema:
               $ref: '#/components/schemas/AuthData'
       responses:
-        '200':
+        200:
           description: Данные профиля пользователя
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/PersonData'
-        '400':
+        400:
           description: Некорректные параметры запроса
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/BadRequestError'
-        '401':
+        401:
           description: Неверный логин или пароль
-        '500':
+        500:
           description: Ошибка получения профиля
           content:
             application/json:
@@ -111,23 +111,205 @@ paths:
             schema:
               $ref: '#/components/schemas/UpdateProfileData'
       responses:
-        '200':
+        200:
           description: Профиль успешно обновлен
-        '400':
+        400:
           description: Некорректные параметры запроса
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/BadRequestError'
-        '401':
+        401:
           description: Неверный логин или пароль
-        '500':
+        500:
           description: Ошибка обновления профиля
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/InternalServerError'
+  
+  /posts:
+    post:
+      summary: Создать новый пост
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PostCreateData'
+      responses:
+        200:
+          description: Пост успешно создан
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: string
+        400:
+          description: Некорректные параметры запроса
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BadRequestError'
+        401:
+          description: Неверный логин или пароль
+        500:
+          description: Ошибка создания поста
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InternalServerError'
 
+  /posts/{postId}:
+    get:
+      summary: Получить пост по ID
+      parameters:
+        - name: postId
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AuthData'
+      responses:
+        200:
+          description: Информация о посте
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PostData'
+        400:
+          description: Некорректные параметры запроса
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BadRequestError'
+        401:
+          description: Неверный логин или пароль
+        404:
+          description: Пост не найден
+        500:
+          description: Ошибка получения поста
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InternalServerError'
+    put:
+      summary: Обновить пост
+      parameters:
+        - name: postId
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PostUpdateData'
+      responses:
+        200:
+          description: Пост успешно обновлён
+        400:
+          description: Некорректные параметры запроса
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BadRequestError'
+        401:
+          description: Неверный логин или пароль
+        404:
+          description: Пост не найден
+        500:
+          description: Ошибка обновления поста
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InternalServerError'
+    delete:
+      summary: Удалить пост
+      parameters:
+        - name: postId
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AuthData'
+      responses:
+        200:
+          description: Пост успешно удалён
+        400:
+          description: Некорректные параметры запроса
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BadRequestError'
+        401:
+          description: Неверный логин или пароль
+        404:
+          description: Пост не найден
+        500:
+          description: Ошибка удаления поста
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InternalServerError'
+  /posts/list:
+    get:
+      summary: Получить список постов с пагинацией
+      parameters:
+        - name: page
+          in: query
+          schema:
+            type: integer
+            default: 1
+        - name: limit
+          in: query
+          schema:
+            type: integer
+            default: 10
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AuthData'
+      responses:
+        200:
+          description: Список постов
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/PostData'
+        400:
+          description: Некорректные параметры запроса
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BadRequestError'
+        401:
+          description: Неверный логин или пароль
+        500:
+          description: Ошибка получения списка постов
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InternalServerError'
+    
 components:
   schemas:
     InternalServerError:
@@ -191,9 +373,61 @@ components:
         phone_number:
           type: string
           description: Номер телефона
-            
-  securitySchemes:
-    bearerAuth:
-      type: http
-      scheme: bearer
-      bearerFormat: JWT
+    
+    PostData:
+      type: object
+      properties:
+        id:
+          type: string
+        title:
+          type: string
+        description:
+          type: string
+        creatorId:
+          type: string
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+        isPrivate:
+          type: boolean
+        tags:
+          type: array
+          items:
+            type: string
+    
+    PostCreateData:
+      allOf:
+        - $ref: '#/components/schemas/AuthData'
+        - type: object
+          required: [title, description]
+          properties:
+            title:
+              type: string
+            description:
+              type: string
+            tags:
+              type: array
+              items:
+                type: string
+            isPrivate:
+              type: boolean
+              default: False
+    
+    PostUpdateData:
+      allOf:
+        - $ref: '#/components/schemas/AuthData'
+        - type: object
+          properties:
+            title:
+              type: string
+            description:
+              type: string
+            tags:
+              type: array
+              items:
+                type: string
+            isPrivate:
+              type: boolean

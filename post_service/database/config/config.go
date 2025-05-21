@@ -8,23 +8,24 @@ import (
 )
 
 type Config struct {
-	Port           string
-	Host           string
-	UserServiceUrl string
-	PostServiceUrl string
+	DBHost     string
+	DBPort     string
+	DBUser     string
+	DBPassword string
+	DBName     string
 }
 
 func LoadConfig() (*Config, error) {
-	err := godotenv.Load("config/.env")
+	err := godotenv.Load("database/config/.env")
 	if err != nil {
 		log.Printf("Ошибка чтения файла конфигурации: %v", err)
 	}
-
 	return &Config{
-		Port:           getEnv("PORT", "8081"),
-		Host:           getEnv("HOST", "127.0.0.1"),
-		UserServiceUrl: getEnv("USER_SERVICE_URL", "http://user_service:8080"),
-		PostServiceUrl: getEnv("POST_SERVICE_URL", "http://post_service:8082"),
+		DBHost:     getEnv("DB_HOST", "127.0.0.1"),
+		DBPort:     getEnv("DB_PORT", "2345"),
+		DBUser:     getEnv("DB_USER", "postgres"),
+		DBPassword: getEnv("DB_PASSWORD", "YaGnI"),
+		DBName:     getEnv("DB_NAME", "post_service"),
 	}, nil
 }
 

@@ -1,0 +1,10 @@
+CREATE TABLE IF NOT EXISTS post_info(
+    post_id TEXT PRIMARY KEY,
+    title TEXT NOT NULL,
+    description TEXT NOT NULL,
+    creator_id UUID NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    is_private BOOLEAN NOT NULL DEFAULT FALSE,
+    tags TEXT[] NOT NULL DEFAULT '{}'
+);

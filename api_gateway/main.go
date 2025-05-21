@@ -2,6 +2,7 @@ package main
 
 import (
 	"api_gateway/config"
+	"api_gateway/post_service_api"
 	"api_gateway/server"
 	"api_gateway/user_service_api"
 	"log"
@@ -23,6 +24,7 @@ func main() {
 		log.Fatal("Ошибка загрузки конфигурации")
 	}
 	user_service_api.Cfg = *cfg
+	post_service_api.Cfg = *cfg
 
 	srv := server.NewServer(cfg)
 	log.Printf("Сервер запущен на порту %s", cfg.Port)
